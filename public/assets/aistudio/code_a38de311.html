@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RAPH // Studio Archive '26 — Informatics, Python &amp; Web</title>
+<!-- BEGIN: GoogleFonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=Archivo:ital,wght@0,300;0,400;0,600;0,700;1,400&amp;family=Caveat:wght@600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- END: GoogleFonts -->
+<!-- BEGIN: TailwindCDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'studio-top': '#5E8B7B',
+            'studio-mid': '#3C6A5B',
+            'studio-deep': '#24473C',
+            'studio-darker': '#162F27',
+            'paper-white': '#F7F7F5',
+            'surface-card': '#FFFFFF',
+            'ink': '#111315',
+            'mint-light': '#D6EBE3',
+            'lanyard-strap': '#EDEDED'
+          },
+          fontFamily: {
+            display: ['"Archivo Black"', 'sans-serif'],
+            body: ['"Plus Jakarta Sans"', 'sans-serif'],
+            script: ['Caveat', 'cursive'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+            archivo: ['Archivo', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<!-- END: TailwindCDN -->
+<!-- BEGIN: CustomStyles -->
+<style data-purpose="custom-variables-and-textures">
+    :root {
+      --studio-top: #5E8B7B;
+      --studio-mid: #3C6A5B;
+      --studio-deep: #24473C;
+      --paper-white: #F7F7F5;
+      --surface-card: #FFFFFF;
+      --ink: #111315;
+      --mint-highlight: #D6EBE3;
+      --lanyard-strap: #EFEFEF;
+    }
+
+    /* Studio Cyclorama Background */
+    .bg-cyclorama {
+      background: radial-gradient(ellipse 90% 75% at 50% 42%, #5E8B7B 0%, #3C6A5B 52%, #224338 100%);
+    }
+
+    /* Film grain overlay */
+    .film-grain {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.055'/%3E%3C/svg%3E");
+    }
+
+    /* Woven Lanyard Texture */
+    .lanyard-texture {
+      background-color: #f1f1ee;
+      background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 4px),
+                        repeating-linear-gradient(-45deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 4px);
+    }
+
+    /* Lanyard sway motion */
+    @keyframes sway {
+      0%, 100% {
+        transform: rotate(0deg);
+      }
+      25% {
+        transform: rotate(1.2deg);
+      }
+      75% {
+        transform: rotate(-1.2deg);
+      }
+    }
+
+    .lanyard-rig {
+      transform-origin: top center;
+      animation: sway 6s ease-in-out infinite;
+      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .lanyard-rig:hover {
+      animation-play-state: paused;
+    }
+
+    /* Pass card frosted reflection */
+    .badge-gloss {
+      background: linear-gradient(135deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.08) 45%, rgba(255,255,255,0.2) 100%);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1D3B32;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #4E7C6C;
+      border-radius: 4px;
+    }
+  </style>
+<!-- END: CustomStyles -->
+</head>
+<body class="bg-[#F5F5F2] text-ink font-body selection:bg-mint-highlight selection:text-studio-deep relative antialiased overflow-x-hidden">
+<!-- Grain Overlay -->
+<div class="film-grain fixed inset-0 pointer-events-none z-50 mix-blend-overlay"></div>
+<!-- BEGIN: Navigation -->
+<header class="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 py-4 transition-all duration-300" data-purpose="site-header">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<!-- Brand Pill -->
+<a class="backdrop-blur-md bg-black/35 hover:bg-black/45 border border-white/20 text-white px-4 py-2 rounded-full text-xs sm:text-sm font-mono tracking-wider flex items-center gap-2.5 transition shadow-lg" href="#hero">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+<span class="font-bold tracking-tight">RAPH // STUDIO ARCHIVE '26</span>
+</a>
+<!-- Navigation Links -->
+<nav class="backdrop-blur-md bg-black/35 border border-white/20 px-3 sm:px-5 py-2 rounded-full hidden md:flex items-center gap-6 text-xs font-mono font-medium tracking-wide text-white/90 shadow-lg">
+<a class="hover:text-emerald-300 transition-colors uppercase" href="#about">About</a>
+<a class="hover:text-emerald-300 transition-colors uppercase" href="#projects">Projects</a>
+<a class="hover:text-emerald-300 transition-colors uppercase" href="#skills">Skills</a>
+<a class="hover:text-emerald-300 transition-colors uppercase" href="#experience">Experience</a>
+<a class="hover:text-emerald-300 transition-colors uppercase" href="#contact">Contact</a>
+</nav>
+<!-- Quick Action CTA -->
+<a class="backdrop-blur-md bg-white/90 hover:bg-white text-studio-darker px-4 py-2 rounded-full text-xs font-mono font-bold tracking-wider uppercase transition shadow-md hover:shadow-xl" href="#contact">
+        Get In Touch
+      </a>
+</div>
+</header>
+<!-- END: Navigation -->
+<!-- BEGIN: HeroSection -->
+<section class="relative min-h-[100svh] w-full bg-cyclorama flex flex-col justify-between pt-24 pb-8 px-4 sm:px-8 overflow-hidden select-none" data-purpose="hero-cyclorama" id="hero">
+<!-- Hero Layer 1: Monumental Background Typography -->
+<div class="absolute inset-x-0 top-12 sm:top-16 flex flex-col items-center pointer-events-none z-0">
+<div class="relative w-full max-w-7xl mx-auto text-center px-4">
+<h1 class="font-display text-[15vw] sm:text-[14vw] lg:text-[13vw] uppercase tracking-tighter leading-none text-white/20 select-none">
+          RAMADHANI
+        </h1>
+<!-- Caveat script badge tilted -->
+<span class="font-script text-white text-2xl sm:text-4xl lg:text-5xl -rotate-6 tracking-normal drop-shadow-md inline-block absolute left-8 sm:left-24 top-1/2 -translate-y-2">
+          python-dev &amp; builder
+        </span>
+</div>
+</div>
+<!-- Center Stage Composition: Desk, Subject Cutout & Hanging Lanyard -->
+<div class="relative max-w-7xl mx-auto w-full flex-1 flex items-end justify-center z-10 min-h-[540px]">
+<!-- Sub-layer 2: Desk Corner & Studio Accessories (Bottom Left) -->
+<div class="absolute -left-6 sm:left-2 lg:left-8 bottom-0 z-10 pointer-events-none w-64 sm:w-80 lg:w-96">
+<!-- Desk Surface Minimalist 90s Bauhaus/Modernist Edge -->
+<div class="relative">
+<!-- Office Chair backrest silhouette -->
+<div class="absolute -left-8 -bottom-4 w-32 h-44 bg-[#111315] rounded-t-xl border-4 border-[#2b2b2b] shadow-2xl opacity-90 transform -rotate-2">
+<div class="w-full h-full flex flex-col justify-around py-3 px-1">
+<div class="w-full h-1 bg-[#262626]"></div>
+<div class="w-full h-1 bg-[#262626]"></div>
+<div class="w-full h-1 bg-[#262626]"></div>
+<div class="w-full h-1 bg-[#262626]"></div>
+</div>
+</div>
+<!-- Chrome Modernist Desk Slab -->
+<div class="relative bg-gradient-to-b from-[#e5e5e0] to-[#c7c7c2] h-20 w-72 sm:w-96 rounded-tl-md shadow-2xl border-t-2 border-white/60 p-3 flex flex-col justify-between">
+<div class="flex items-end gap-3">
+<!-- Coffee Ceramic Mug -->
+<div class="w-9 h-11 bg-white rounded-sm border-r-4 border-b-2 border-black/15 shadow-md relative">
+<div class="absolute -right-3 top-2 w-3.5 h-6 border-2 border-white rounded-r-md"></div>
+</div>
+<!-- UKM CAKRAWALA Project Dossier Folder Stack -->
+<div class="bg-[#dcd6c5] border border-[#a89f8b] px-3 py-1.5 shadow-md transform -rotate-1 rounded-sm text-[9px] font-mono text-[#443f33] w-48 leading-tight">
+<span class="block font-bold">PROJECT DOSSIER '26</span>
+<span class="text-[8px] opacity-75">UKM CAKRAWALA // IT PLN</span>
+</div>
+</div>
+<!-- Metallic Desk edge bevel -->
+<div class="w-full h-2 bg-gradient-to-r from-gray-300 via-white to-gray-400 rounded-sm"></div>
+</div>
+<!-- Desk Chrome Frame Leg -->
+<div class="w-4 h-28 bg-gradient-to-r from-gray-300 via-gray-100 to-gray-400 ml-4 shadow-xl"></div>
+</div>
+</div>
+<!-- Sub-layer 3: Retro Developer Subject (Centered Canvas / Visual Reference Reference) -->
+<div class="relative z-20 flex justify-center items-end h-full max-h-[85vh] w-full max-w-lg lg:max-w-xl">
+<!-- Visual Cutout Illustration Container based on prompt reference -->
+<div class="relative w-full flex justify-center items-end">
+<img alt="Ravi Ramadhani (Raph) - Retro 90s Developer Studio Cutout" class="w-auto max-h-[72vh] sm:max-h-[80vh] object-contain object-bottom filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.55)] pointer-events-none" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD29zPi28eKMjfEL-Q9ZD0HNNfL0parFmDTJ7xhc_-1WH-JXJzHhPCZgC0LK6ZoM1RPzqOtTEqZ7dacjwdfj9ETMSDrnx1UKhQ_NKS7V7QWCGiH21ZlCxqerV-78VNzY1DpPwpCh8TGUs6wg4iXQckM4A_NA4me4RBfSBm2lLoD3F5o1vS7C7SGPFHrZApimkhlcJPRo_mpa386xg2HNIrkeK-8a_BTR74UHJq3laTx9ZaWlpI0hwYV"/>
+</div>
+</div>
+<!-- Sub-layer 4: Hanging Lanyard ID Pass Card (Interactive Canvas Rig) -->
+<div class="absolute right-0 sm:right-6 lg:right-16 top-[-100px] z-30 lanyard-rig cursor-grab active:cursor-grabbing select-none" data-purpose="interactive-lanyard-card" id="lanyardWrapper">
+<div class="flex flex-col items-center">
+<!-- Lanyard Strap (Extending beyond viewport top) -->
+<div class="w-10 sm:w-12 h-44 lanyard-texture shadow-inner border-x border-black/10 relative flex justify-center">
+<!-- Woven stitching line down middle -->
+<div class="w-[2px] h-full border-r border-dashed border-black/15"></div>
+</div>
+<!-- Metallic Lobster Clasp & Swivel Hook -->
+<div class="flex flex-col items-center -mt-1 z-10">
+<!-- Strap Ring Loop -->
+<div class="w-8 h-4 rounded-full border-2 border-gray-400 bg-gradient-to-b from-gray-200 to-gray-400 shadow-sm"></div>
+<!-- Swivel joint -->
+<div class="w-3 h-3 bg-gray-400 rounded-sm -mt-1 border border-gray-500 shadow-inner"></div>
+<!-- Spring snap clip -->
+<div class="w-5 h-8 bg-gradient-to-r from-gray-300 via-gray-100 to-gray-400 rounded-md border border-gray-500 shadow-md relative flex items-center justify-center">
+<div class="w-1.5 h-4 bg-gray-600 rounded-full opacity-60"></div>
+</div>
+<!-- ID Card O-Ring connector -->
+<div class="w-7 h-3 rounded-full border-2 border-gray-400 -mt-1.5"></div>
+</div>
+<!-- Clear Vinyl Pass Pocket Sleeve with ID Card inside -->
+<div class="relative w-64 sm:w-72 bg-white/85 backdrop-blur-md rounded-2xl p-3 border-2 border-white/80 shadow-[0_20px_50px_rgba(0,0,0,0.45)] mt-1 transition-transform duration-200 hover:scale-[1.02]">
+<!-- Clear punch hole slot -->
+<div class="w-full flex justify-center mb-2">
+<div class="w-14 h-2.5 rounded-full bg-emerald-950/25 border border-white/60"></div>
+</div>
+<!-- Card Body (Branded Inner Paper) -->
+<div class="bg-white rounded-xl p-4 border border-gray-200/80 shadow-sm relative overflow-hidden">
+<!-- Gloss Overlay Reflection -->
+<div class="absolute inset-0 badge-gloss pointer-events-none"></div>
+<!-- Header Bar -->
+<div class="flex items-start justify-between border-b-2 border-black pb-2 mb-3">
+<div>
+<h2 class="font-display text-xl sm:text-2xl tracking-tight leading-none text-ink">
+                    DEVELOPER<br/>CARD
+                  </h2>
+</div>
+<div class="text-right">
+<span class="font-mono text-xs sm:text-sm font-black tracking-widest text-ink block">2026</span>
+<span class="text-[9px] font-mono tracking-tighter uppercase px-1.5 py-0.5 bg-emerald-100 text-emerald-950 rounded font-semibold">VALID // ACT</span>
+</div>
+</div>
+<!-- Role & Dept -->
+<div class="mb-3">
+<p class="font-mono text-[10px] tracking-wider uppercase font-bold text-gray-500">
+                  INFORMATICS // WEB &amp; CV DEV
+                </p>
+</div>
+<!-- Pass Photo Avatar & Barcode Strip -->
+<div class="flex items-center gap-3 mb-3">
+<div class="w-16 h-20 sm:w-20 sm:h-24 bg-gray-100 rounded border border-gray-300 overflow-hidden relative shadow-inner shrink-0">
+<!-- Thumbnail of the user/reference cutout -->
+<img alt="Raph ID Thumbnail" class="w-full h-full object-cover object-top filter grayscale contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD29zPi28eKMjfEL-Q9ZD0HNNfL0parFmDTJ7xhc_-1WH-JXJzHhPCZgC0LK6ZoM1RPzqOtTEqZ7dacjwdfj9ETMSDrnx1UKhQ_NKS7V7QWCGiH21ZlCxqerV-78VNzY1DpPwpCh8TGUs6wg4iXQckM4A_NA4me4RBfSBm2lLoD3F5o1vS7C7SGPFHrZApimkhlcJPRo_mpa386xg2HNIrkeK-8a_BTR74UHJq3laTx9ZaWlpI0hwYV"/>
+<div class="absolute bottom-0 inset-x-0 bg-black/60 text-[7px] text-white font-mono text-center py-0.5">IT-PLN '26</div>
+</div>
+<div class="flex-1 space-y-1.5 font-mono text-[9px] sm:text-[10px] text-gray-800">
+<div class="border-b border-gray-200 pb-0.5">
+<span class="text-gray-400 block text-[8px]">NAME</span>
+<span class="font-bold tracking-tight text-ink">R. RAMADHANI (RAPH)</span>
+</div>
+<div class="border-b border-gray-200 pb-0.5">
+<span class="text-gray-400 block text-[8px]">FOCUS</span>
+<span class="font-bold text-emerald-800">PYTHON, CV &amp; WEB</span>
+</div>
+<div>
+<span class="text-gray-400 block text-[8px]">LOCATION</span>
+<span class="font-semibold text-gray-700">JAKARTA / BIAK</span>
+</div>
+</div>
+</div>
+<!-- Metadata Grid -->
+<div class="space-y-1 pt-2 border-t border-dashed border-gray-300 font-mono text-[9px] leading-tight text-gray-600">
+<div class="flex justify-between">
+<span class="text-gray-400 uppercase">IG:</span>
+<span class="font-bold text-ink hover:underline cursor-pointer">@rappyn_</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-gray-400 uppercase">EMAIL:</span>
+<span class="font-medium text-[8px] text-ink truncate max-w-[140px]">raviramadhani211@gmail.com</span>
+</div>
+</div>
+<!-- Bottom Barcode Accent -->
+<div class="mt-3 pt-2 border-t border-gray-200 flex items-center justify-between">
+<div class="flex items-center space-x-[2px] h-4">
+<div class="w-0.5 h-full bg-black"></div>
+<div class="w-1 h-full bg-black"></div>
+<div class="w-0.5 h-full bg-black"></div>
+<div class="w-1.5 h-full bg-black"></div>
+<div class="w-0.5 h-full bg-black"></div>
+<div class="w-1 h-full bg-black"></div>
+<div class="w-2 h-full bg-black"></div>
+<div class="w-0.5 h-full bg-black"></div>
+<div class="w-1 h-full bg-black"></div>
+<div class="w-0.5 h-full bg-black"></div>
+<div class="w-1.5 h-full bg-black"></div>
+<div class="w-0.5 h-full bg-black"></div>
+<div class="w-1 h-full bg-black"></div>
+</div>
+<span class="font-mono text-[8px] text-gray-400 tracking-widest">RAPH-90-2026</span>
+</div>
+</div>
+<!-- Physics instruction tag -->
+<div class="text-center mt-2">
+<span class="text-[8px] font-mono uppercase tracking-widest text-white/80 bg-black/40 px-2 py-0.5 rounded-full">
+                Drag / Sway Pass
+              </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Hero Layer 5: Scroll Indicator -->
+<div class="w-full flex justify-center items-center z-20 pb-1 pt-4">
+<a class="text-white/60 hover:text-white flex items-center gap-2 font-mono text-xs tracking-widest uppercase transition-all" href="#about">
+<span>SCROLL INTO THE WORK</span>
+<svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M19 14l-7 7m0 0l-7-7m7 7V3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+</div>
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: AboutSection -->
+<section class="py-24 sm:py-32 px-4 sm:px-8 bg-[#F5F5F2] border-b border-gray-300" data-purpose="about-and-origins" id="about">
+<div class="max-w-6xl mx-auto">
+<!-- Section Index Header -->
+<div class="flex items-center gap-3 font-mono text-xs text-studio-mid font-bold tracking-widest uppercase mb-4">
+<span>01 // STUDIO DOSSIER &amp; ORIGIN</span>
+<div class="h-px bg-studio-mid/30 flex-1"></div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+<!-- Left Column: Primary Manifesto -->
+<div class="lg:col-span-7 space-y-6">
+<h2 class="font-display text-3xl sm:text-5xl text-ink leading-[1.1] tracking-tight">
+            CURIOSITY BUILT INTO <br/>
+<span class="font-script text-4xl sm:text-6xl text-studio-mid font-normal">working systems.</span>
+</h2>
+<div class="prose prose-lg text-gray-700 font-archivo font-normal leading-relaxed space-y-4">
+<p>
+              I'm <strong class="text-ink font-semibold">Ravi Ramadhani Putra Gunawan</strong> — better known as <span class="bg-mint-highlight/60 px-1 font-mono text-ink font-semibold">Raph</span>. An Informatics Engineering undergraduate at <strong class="text-ink">Institut Teknologi PLN (2026–Now)</strong>, rooted between the island coastline of <strong class="text-ink">Biak, Papua</strong> and the high-density metropolis of <strong class="text-ink">Jakarta</strong>.
+            </p>
+<p>
+              My focus lives at the intersection of practical software engineering and interactive visual experiences: developing robust Python backends, computer vision gesture pipelines with OpenCV &amp; MediaPipe, and tactile, high-performance web spaces.
+            </p>
+<p class="text-base text-gray-600">
+              When stepping away from terminals, I recharge on the futsal court, dig into Japanese technological pop-culture aesthetics, or engineer lean tools for campus communities like UKM Cakrawala.
+            </p>
+</div>
+<!-- Highlight Badges -->
+<div class="flex flex-wrap gap-2 pt-4">
+<span class="px-3 py-1.5 bg-white border border-gray-300 rounded-md font-mono text-xs text-gray-800 shadow-sm">
+              📍 Biak ➔ Jakarta
+            </span>
+<span class="px-3 py-1.5 bg-white border border-gray-300 rounded-md font-mono text-xs text-gray-800 shadow-sm">
+              🎓 Informatics Engineering @ IT-PLN
+            </span>
+<span class="px-3 py-1.5 bg-white border border-gray-300 rounded-md font-mono text-xs text-gray-800 shadow-sm">
+              ⚡ Python &amp; Real-Time Systems
+            </span>
+<span class="px-3 py-1.5 bg-white border border-gray-300 rounded-md font-mono text-xs text-gray-800 shadow-sm">
+              ⚽ Futsal &amp; Japanese Pop Culture
+            </span>
+</div>
+</div>
+<!-- Right Column: Academic & Studio Ledger Sheet -->
+<div class="lg:col-span-5 bg-white rounded-2xl p-6 sm:p-8 border border-gray-300 shadow-xl space-y-6 relative overflow-hidden" data-purpose="academic-sheet">
+<div class="flex items-center justify-between border-b pb-4 border-gray-200">
+<div>
+<span class="font-mono text-[10px] tracking-widest uppercase text-gray-400 block">RECORD // ARCHIVE</span>
+<h3 class="font-display text-xl text-ink">SPECIFICATION SHEET</h3>
+</div>
+<span class="font-mono text-xs font-bold text-studio-mid bg-mint-highlight/50 px-2 py-1 rounded">2026 ED.</span>
+</div>
+<!-- Timeline list -->
+<div class="space-y-4">
+<div class="border-l-2 border-studio-mid pl-4 relative">
+<span class="w-2 h-2 rounded-full bg-studio-mid absolute -left-[5px] top-1.5"></span>
+<span class="font-mono text-xs text-gray-400">2026 — PRESENT</span>
+<h4 class="font-bold text-ink text-base">Informatics Engineering (S1)</h4>
+<p class="text-xs text-gray-600 font-mono">Institut Teknologi PLN — Jakarta</p>
+<p class="text-xs text-gray-500 mt-1">Specializing in algorithms, computer vision pipelines, fullstack platforms, and campus engineering leadership.</p>
+</div>
+<div class="border-l-2 border-gray-300 pl-4 relative">
+<span class="w-2 h-2 rounded-full bg-gray-400 absolute -left-[5px] top-1.5"></span>
+<span class="font-mono text-xs text-gray-400">2023 — 2026</span>
+<h4 class="font-bold text-ink text-base">High School Diploma (MIPA)</h4>
+<p class="text-xs text-gray-600 font-mono">SMAN 18 Makassar — South Sulawesi</p>
+<p class="text-xs text-gray-500 mt-1">Focus on Natural Sciences, algorithmic logic, festival organization, and technical committee coordination.</p>
+</div>
+</div>
+<!-- Studio Location Stamp -->
+<div class="p-4 bg-[#F9F9F7] rounded-xl border border-dashed border-gray-300 flex items-center justify-between text-xs font-mono">
+<div>
+<span class="text-gray-400 block text-[9px] uppercase">ORIGIN &amp; BASE</span>
+<span class="font-bold text-ink">BIAK, PAPUA ➔ JAKARTA, ID</span>
+</div>
+<div class="text-right">
+<span class="text-gray-400 block text-[9px] uppercase">STATUS</span>
+<span class="text-emerald-700 font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span> OPEN TO WORK
+              </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: AboutSection -->
+<!-- BEGIN: ProjectsSection -->
+<section class="py-24 sm:py-32 px-4 sm:px-8 bg-studio-deep text-white relative overflow-hidden" data-purpose="selected-projects" id="projects">
+<div class="max-w-6xl mx-auto relative z-10">
+<!-- Section Index Header -->
+<div class="flex items-center gap-3 font-mono text-xs text-emerald-300/80 font-bold tracking-widest uppercase mb-4">
+<span>02 // PRODUCTION ARCHIVE</span>
+<div class="h-px bg-white/20 flex-1"></div>
+</div>
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
+<div>
+<h2 class="font-display text-3xl sm:text-5xl tracking-tight text-white">
+            SELECTED <span class="font-script text-4xl sm:text-6xl text-emerald-300 font-normal">builds &amp; experiments.</span>
+</h2>
+<p class="font-mono text-xs text-gray-300 mt-2">PRODUCTION SYSTEMS, APIS &amp; REAL-TIME EXPERIMENTAL ENGINES</p>
+</div>
+<div class="font-mono text-xs text-emerald-200/60 uppercase">
+          [ 03 FEATURED ARTIFACTS ]
+        </div>
+</div>
+<!-- Project Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Project 1: UKM Cakrawala Web Platform -->
+<article class="bg-[#19322A] border border-white/15 rounded-2xl overflow-hidden hover:border-emerald-400/50 transition-all duration-300 flex flex-col group hover:-translate-y-1.5 shadow-2xl">
+<!-- Graphic Preview Header (SVG Interactive Terminal / Wireframe) -->
+<div class="h-48 bg-[#10221C] border-b border-white/10 p-4 flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between font-mono text-[10px] text-emerald-400">
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span> CAKRAWALA_SYS.V2
+              </span>
+<span>2026 // WEB PLATFORM</span>
+</div>
+<!-- Interactive Visual Schematic -->
+<div class="py-2">
+<div class="w-full bg-[#18362D] rounded p-2.5 space-y-1.5 font-mono text-[10px] text-gray-300">
+<div class="flex items-center justify-between text-xs text-white">
+<span>POST /api/v1/auth/member</span>
+<span class="text-emerald-400 text-[10px]">200 OK</span>
+</div>
+<div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-emerald-400 w-3/4"></div>
+</div>
+<div class="text-[9px] text-gray-400 truncate">Token: signed_jwt_itpln_cakrawala_verified</div>
+</div>
+</div>
+<!-- Tech badges strip -->
+<div class="flex gap-1.5 font-mono text-[9px]">
+<span class="bg-white/10 px-2 py-0.5 rounded text-white/90">Tailwind</span>
+<span class="bg-white/10 px-2 py-0.5 rounded text-white/90">WhatsApp API</span>
+<span class="bg-white/10 px-2 py-0.5 rounded text-white/90">Role Auth</span>
+</div>
+</div>
+<!-- Project Description -->
+<div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+<div>
+<h3 class="font-display text-xl text-white group-hover:text-emerald-300 transition-colors">
+                UKM Cakrawala Organization Web Platform
+              </h3>
+<p class="font-archivo text-sm text-gray-300 mt-2 leading-relaxed">
+                Centralized management hub for student organization operations: active registration flow, automated WhatsApp notification triggers for recruitment, and secure role-based dashboard for executives.
+              </p>
+</div>
+<div class="pt-4 border-t border-white/10 flex items-center justify-between font-mono text-xs">
+<span class="text-emerald-300">DEPLOYED SYSTEM</span>
+<span class="text-white/60 group-hover:text-white flex items-center gap-1 transition-colors">
+                Case Study <span>↗</span>
+</span>
+</div>
+</div>
+</article>
+<!-- Project 2: Real-Time Hand & Motion Tracker -->
+<article class="bg-[#19322A] border border-white/15 rounded-2xl overflow-hidden hover:border-emerald-400/50 transition-all duration-300 flex flex-col group hover:-translate-y-1.5 shadow-2xl">
+<!-- Graphic Preview Header (OpenCV Vector Hand Wireframe) -->
+<div class="h-48 bg-[#10221C] border-b border-white/10 p-4 flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between font-mono text-[10px] text-emerald-400">
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-yellow-400 animate-ping"></span> CV_LANDMARKS_21
+              </span>
+<span>2025–2026 // VISION</span>
+</div>
+<!-- Vector tracking schematic -->
+<div class="flex items-center justify-center py-1">
+<svg class="w-24 h-24 stroke-emerald-400 fill-none" viewbox="0 0 100 100">
+<circle class="stroke-white/20" cx="50" cy="50" r="44" stroke-dasharray="2 3"></circle>
+<!-- Skeletal Nodes -->
+<line stroke-width="1.5" x1="50" x2="35" y1="85" y2="55"></line>
+<line stroke-width="1.5" x1="35" x2="25" y1="55" y2="40"></line>
+<line stroke-width="1.5" x1="50" x2="48" y1="85" y2="45"></line>
+<line stroke-width="1.5" x1="48" x2="45" y1="45" y2="25"></line>
+<line stroke-width="1.5" x1="50" x2="62" y1="85" y2="48"></line>
+<line stroke-width="1.5" x1="62" x2="70" y1="48" y2="30"></line>
+<circle class="fill-emerald-300" cx="50" cy="85" r="3"></circle>
+<circle class="fill-emerald-400" cx="35" cy="55" r="2.5"></circle>
+<circle class="fill-yellow-300" cx="25" cy="40" r="2.5"></circle>
+<circle class="fill-emerald-400" cx="48" cy="45" r="2.5"></circle>
+<circle class="fill-yellow-300" cx="45" cy="25" r="2.5"></circle>
+<circle class="fill-emerald-400" cx="62" cy="48" r="2.5"></circle>
+<circle class="fill-yellow-300" cx="70" cy="30" r="2.5"></circle>
+</svg>
+</div>
+<!-- Tech badges -->
+<div class="flex gap-1.5 font-mono text-[9px]">
+<span class="bg-white/10 px-2 py-0.5 rounded text-white/90">Python 3</span>
+<span class="bg-white/10 px-2 py-0.5 rounded text-white/90">OpenCV</span>
+<span class="bg-white/10 px-2 py-0.5 rounded text-white/90">MediaPipe</span>
+</div>
+</div>
+<!-- Project Description -->
+<div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+<div>
+<h3 class="font-display text-xl text-white group-hover:text-emerald-300 transition-colors">
+                Real-Time Hand &amp; Motion Gesture Tracker
+              </h3>
+<p class="font-archivo text-sm text-gray-300 mt-2 leading-relaxed">
+                Computer vision application tracking 21 spatial hand landmark nodes via web camera feed with low latency inference. Translates custom sign primitives into system automation shortcuts and inputs.
+              </p>
+</div>
+<div class="pt-4 border-t border-white/10 flex items-center justify-between font-mono text-xs">
+<span class="text-yellow-300">OPEN EXPERIMENT</span>
+<span class="text-white/60 group-hover:text-white flex items-center gap-1 transition-colors">
+                Source Code <span>↗</span>
+</span>
+</div>
+</div>
+</article>
+<!-- Project 3: Data Analysis & 3D Interactive Experiment -->
+<article class="bg-[#19322A] border border-white/15 rounded-2xl overflow-hidden hover:border-emerald-400/50 transition-all duration-300 flex flex-col group hover:-translate-y-1.5 shadow-2xl">
+<!-- Graphic Preview Header (Data Visualizer Wave + 3D Cube) -->
+<div class="h-48 bg-[#10221C] border-b border-white/10 p-4 flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between font-mono text-[10px] text-emerald-400">
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-cyan-400"></span> NUMPY_MATRIX_ENGINE
+              </span>
+<span>2025–2026 // LAB</span>
+</div>
+<!-- Matrix & Polyhedron 3D wire representation -->
+<div class="flex items-center justify-around py-1">
+<div class="font-mono text-[9px] text-emerald-300 space-y-0.5">
+<div>[+0.824, -0.194, +0.339]</div>
+<div>[-0.102, +0.941, -0.218]</div>
+<div>[+0.412, +0.089, +0.892]</div>
+<div class="text-gray-400 text-[8px]">Δ_loss: 0.0024 // 60 FPS</div>
+</div>
+<div class="w-12 h-12 border border-cyan-400/60 rotate-45 transform skew-x-6 flex items-center justify-center">
+<div class="w-6 h-6 border border-white/40"></div>
+</div>
+</div>
+<!-- Tech badges -->
+<div class="flex gap-1.5 font-mono text-[9px]">
+<span class="bg-white/10 px-2 py-0.5 rounded text-white/90">NumPy</span>
+<span class="bg-white/10 px-2 py-0.5 rounded text-white/90">Pandas</span>
+<span class="bg-white/10 px-2 py-0.5 rounded text-white/90">Three.js</span>
+</div>
+</div>
+<!-- Project Description -->
+<div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+<div>
+<h3 class="font-display text-xl text-white group-hover:text-emerald-300 transition-colors">
+                Data Pipelines &amp; 3D Web Explorations
+              </h3>
+<p class="font-archivo text-sm text-gray-300 mt-2 leading-relaxed">
+                Collection of computational experiments evaluating dataset distributions using Pandas/Matplotlib, accompanied by real-time interactive 3D WebGL scenes for geometric spatial rendering.
+              </p>
+</div>
+<div class="pt-4 border-t border-white/10 flex items-center justify-between font-mono text-xs">
+<span class="text-cyan-300">INTERACTIVE LAB</span>
+<span class="text-white/60 group-hover:text-white flex items-center gap-1 transition-colors">
+                Live Prototype <span>↗</span>
+</span>
+</div>
+</div>
+</article>
+</div>
+</div>
+</section>
+<!-- END: ProjectsSection -->
+<!-- BEGIN: SkillsSection -->
+<section class="py-24 sm:py-32 px-4 sm:px-8 bg-[#F5F5F2] border-b border-gray-300" data-purpose="technical-arsenal" id="skills">
+<div class="max-w-6xl mx-auto">
+<!-- Section Index Header -->
+<div class="flex items-center gap-3 font-mono text-xs text-studio-mid font-bold tracking-widest uppercase mb-4">
+<span>03 // TECHNICAL ARSENAL</span>
+<div class="h-px bg-studio-mid/30 flex-1"></div>
+</div>
+<div class="mb-12">
+<h2 class="font-display text-3xl sm:text-5xl text-ink tracking-tight">
+          TOOLS &amp; <span class="font-script text-4xl sm:text-6xl text-studio-mid font-normal">capabilities.</span>
+</h2>
+<p class="font-mono text-xs text-gray-500 mt-2 uppercase">CORE PROGRAMMING, FRAMEWORKS &amp; EXECUTION ENVIRONMENT</p>
+</div>
+<!-- Bento Box Layout for Skills -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Bento 1: Python & Computer Vision -->
+<div class="bg-white p-7 rounded-2xl border border-gray-300 shadow-lg space-y-6">
+<div class="flex items-center justify-between">
+<span class="font-mono text-xs font-bold text-studio-mid uppercase">CORE SYSTEM</span>
+<span class="w-3 h-3 rounded-full bg-studio-mid"></span>
+</div>
+<div>
+<h3 class="font-display text-2xl text-ink">Python &amp; Computer Vision</h3>
+<p class="text-sm font-archivo text-gray-600 mt-2">
+              Writing structured, performant algorithms for data manipulation and image recognition streams.
+            </p>
+</div>
+<ul class="space-y-3 font-mono text-xs text-gray-800">
+<li class="flex items-center justify-between p-2.5 bg-gray-50 rounded border border-gray-200">
+<span class="font-bold">Python 3 (OOP, Async, Typing)</span>
+<span class="text-emerald-700 font-bold">90%</span>
+</li>
+<li class="flex items-center justify-between p-2.5 bg-gray-50 rounded border border-gray-200">
+<span>OpenCV &amp; MediaPipe Landmarks</span>
+<span class="text-emerald-700 font-bold">85%</span>
+</li>
+<li class="flex items-center justify-between p-2.5 bg-gray-50 rounded border border-gray-200">
+<span>NumPy &amp; Pandas Data Structures</span>
+<span class="text-emerald-700 font-bold">80%</span>
+</li>
+<li class="flex items-center justify-between p-2.5 bg-gray-50 rounded border border-gray-200">
+<span>Matplotlib &amp; Statistical Plots</span>
+<span class="text-emerald-700 font-bold">75%</span>
+</li>
+</ul>
+</div>
+<!-- Bento 2: Web Engineering & 3D Interactive -->
+<div class="bg-white p-7 rounded-2xl border border-gray-300 shadow-lg space-y-6">
+<div class="flex items-center justify-between">
+<span class="font-mono text-xs font-bold text-studio-mid uppercase">FRONTEND &amp; INTERFACES</span>
+<span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+</div>
+<div>
+<h3 class="font-display text-2xl text-ink">Web &amp; 3D Creative</h3>
+<p class="text-sm font-archivo text-gray-600 mt-2">
+              Crafting responsive web applications with semantic structure, tactile typography and custom canvas dynamics.
+            </p>
+</div>
+<ul class="space-y-3 font-mono text-xs text-gray-800">
+<li class="flex items-center justify-between p-2.5 bg-gray-50 rounded border border-gray-200">
+<span class="font-bold">HTML5 Semantic Architecture</span>
+<span class="text-emerald-700 font-bold">95%</span>
+</li>
+<li class="flex items-center justify-between p-2.5 bg-gray-50 rounded border border-gray-200">
+<span class="font-bold">Tailwind CSS &amp; UI Systems</span>
+<span class="text-emerald-700 font-bold">92%</span>
+</li>
+<li class="flex items-center justify-between p-2.5 bg-gray-50 rounded border border-gray-200">
+<span>Modern JavaScript (ES6+ / DOM APIs)</span>
+<span class="text-emerald-700 font-bold">82%</span>
+</li>
+<li class="flex items-center justify-between p-2.5 bg-gray-50 rounded border border-gray-200">
+<span>Three.js &amp; SVG Vector Graphics</span>
+<span class="text-emerald-700 font-bold">70%</span>
+</li>
+</ul>
+</div>
+<!-- Bento 3: Leadership & Technical Coordination -->
+<div class="bg-white p-7 rounded-2xl border border-gray-300 shadow-lg space-y-6">
+<div class="flex items-center justify-between">
+<span class="font-mono text-xs font-bold text-studio-mid uppercase">PRACTICE &amp; OPS</span>
+<span class="w-3 h-3 rounded-full bg-cyan-600"></span>
+</div>
+<div>
+<h3 class="font-display text-2xl text-ink">Workflow &amp; Operations</h3>
+<p class="text-sm font-archivo text-gray-600 mt-2">
+              Proven ability to coordinate campus technology initiatives, manage timelines, and present specs clearly.
+            </p>
+</div>
+<ul class="space-y-3 font-mono text-xs text-gray-800">
+<li class="flex items-center justify-between p-2.5 bg-gray-50 rounded border border-gray-200">
+<span class="font-bold">Git / GitHub Versioning</span>
+<span class="text-emerald-700 font-bold">88%</span>
+</li>
+<li class="flex items-center justify-between p-2.5 bg-gray-50 rounded border border-gray-200">
+<span>REST APIs &amp; Webhook Integration</span>
+<span class="text-emerald-700 font-bold">84%</span>
+</li>
+<li class="flex items-center justify-between p-2.5 bg-gray-50 rounded border border-gray-200">
+<span>Organizational Project Leadership</span>
+<span class="text-emerald-700 font-bold">90%</span>
+</li>
+<li class="flex items-center justify-between p-2.5 bg-gray-50 rounded border border-gray-200">
+<span>Technical Documentation &amp; Specs</span>
+<span class="text-emerald-700 font-bold">85%</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- END: SkillsSection -->
+<!-- BEGIN: ExperienceSection -->
+<section class="py-24 sm:py-32 px-4 sm:px-8 bg-[#ECECE7] border-b border-gray-300" data-purpose="experience-ledger" id="experience">
+<div class="max-w-6xl mx-auto">
+<!-- Section Index Header -->
+<div class="flex items-center gap-3 font-mono text-xs text-studio-mid font-bold tracking-widest uppercase mb-4">
+<span>04 // FIELD EXPERIENCE</span>
+<div class="h-px bg-studio-mid/30 flex-1"></div>
+</div>
+<div class="mb-14">
+<h2 class="font-display text-3xl sm:text-5xl text-ink tracking-tight">
+          EXPERIENCE <span class="font-script text-4xl sm:text-6xl text-studio-mid font-normal">log.</span>
+</h2>
+<p class="font-mono text-xs text-gray-600 mt-2 uppercase">CHRONOLOGICAL ENGAGEMENTS &amp; RESPONSIBILITIES</p>
+</div>
+<!-- Ledger Timeline Entries -->
+<div class="space-y-6">
+<!-- Experience Entry 1 -->
+<div class="bg-white rounded-xl p-6 sm:p-8 border border-gray-300 shadow-md flex flex-col md:flex-row md:items-start justify-between gap-6 hover:shadow-xl transition-shadow">
+<div class="md:w-1/4">
+<span class="font-mono text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded inline-block mb-1">
+              2026 — PRESENT
+            </span>
+<p class="font-mono text-xs text-gray-500">JAKARTA, INDONESIA</p>
+<p class="font-bold text-ink text-sm mt-2">UKM CAKRAWALA</p>
+<p class="text-xs text-gray-500 font-mono">Institut Teknologi PLN</p>
+</div>
+<div class="md:w-3/4 space-y-3">
+<h3 class="font-display text-xl sm:text-2xl text-ink">Lead Web Developer &amp; Tech Coordinator</h3>
+<p class="font-archivo text-gray-700 leading-relaxed text-sm">
+              Spearheading the continuous development of the organization's official digital presence. Engineered membership registry forms connected with automated WhatsApp verification bots, reducing manual onboarding validation time by 65%. Maintained site reliability and managed role-based credentials for departmental leaders.
+            </p>
+<div class="flex flex-wrap gap-2 pt-2">
+<span class="font-mono text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded border border-gray-200">Fullstack Web</span>
+<span class="font-mono text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded border border-gray-200">API Automation</span>
+<span class="font-mono text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded border border-gray-200">Leadership</span>
+</div>
+</div>
+</div>
+<!-- Experience Entry 2 -->
+<div class="bg-white rounded-xl p-6 sm:p-8 border border-gray-300 shadow-md flex flex-col md:flex-row md:items-start justify-between gap-6 hover:shadow-xl transition-shadow">
+<div class="md:w-1/4">
+<span class="font-mono text-xs font-bold text-gray-700 bg-gray-200 px-2.5 py-1 rounded inline-block mb-1">
+              2024 — 2025
+            </span>
+<p class="font-mono text-xs text-gray-500">MAKASSAR, INDONESIA</p>
+<p class="font-bold text-ink text-sm mt-2">SMAN 18 MAKASSAR</p>
+<p class="text-xs text-gray-500 font-mono">School Cultural Festival</p>
+</div>
+<div class="md:w-3/4 space-y-3">
+<h3 class="font-display text-xl sm:text-2xl text-ink">Event &amp; Sponsorship Committee Coordinator</h3>
+<p class="font-archivo text-gray-700 leading-relaxed text-sm">
+              Coordinated logistical planning, brand sponsor communications, and on-stage digital presentation assets for a multi-day high school arts and cultural exhibition attended by over 800+ students and visitors. Managed scheduling spreadsheets and team delegations.
+            </p>
+<div class="flex flex-wrap gap-2 pt-2">
+<span class="font-mono text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded border border-gray-200">Event Direction</span>
+<span class="font-mono text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded border border-gray-200">Sponsorship Negotiation</span>
+<span class="font-mono text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded border border-gray-200">Stage Coordination</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: ExperienceSection -->
+<!-- BEGIN: ContactAndFooterSection -->
+<footer class="bg-gradient-to-b from-studio-mid to-studio-deep text-white pt-24 pb-12 px-4 sm:px-8 relative overflow-hidden" data-purpose="contact-and-footer" id="contact">
+<!-- Background script watermark -->
+<div class="absolute bottom-0 right-0 select-none pointer-events-none opacity-5">
+<span class="font-display text-[25vw] leading-none">RAPH</span>
+</div>
+<div class="max-w-6xl mx-auto relative z-10">
+<!-- Section Index Header -->
+<div class="flex items-center gap-3 font-mono text-xs text-emerald-300 font-bold tracking-widest uppercase mb-4">
+<span>05 // DIRECT LINE</span>
+<div class="h-px bg-white/20 flex-1"></div>
+</div>
+<!-- Main Headline & Inquiry Pitch -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pb-20 border-b border-white/15">
+<div class="lg:col-span-8 space-y-4">
+<h2 class="font-display text-4xl sm:text-6xl text-white tracking-tight leading-tight">
+            LET'S BUILD <br/>
+<span class="font-script text-5xl sm:text-7xl text-emerald-300 font-normal">something real.</span>
+</h2>
+<p class="font-archivo text-base sm:text-lg text-emerald-100/90 max-w-xl leading-relaxed">
+            Whether you have a Python or Computer Vision challenge, an organizational platform build, or an ambitious creative web project — my inbox is perpetually open.
+          </p>
+</div>
+<!-- Primary Action Box -->
+<div class="lg:col-span-4 flex flex-col gap-3">
+<a class="bg-white text-ink hover:bg-emerald-100 p-4 rounded-xl font-mono text-sm font-bold text-center tracking-wide transition shadow-2xl flex items-center justify-center gap-2" href="mailto:raviramadhani211@gmail.com">
+<span>✉ RAVIRAMADHANI211@GMAIL.COM</span>
+</a>
+<!-- Interactive Copy Email Button -->
+<button class="bg-white/10 hover:bg-white/20 border border-white/30 text-white p-3 rounded-xl font-mono text-xs font-semibold tracking-wider uppercase transition flex items-center justify-center gap-2" id="copyEmailBtn">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span id="copyBtnText">COPY EMAIL ADDRESS</span>
+</button>
+</div>
+</div>
+<!-- Social & Professional Grid Links -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 py-12 border-b border-white/10 font-mono text-xs">
+<a class="p-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg flex items-center justify-between group transition" href="https://instagram.com/rappyn_" rel="noopener noreferrer" target="_blank">
+<span>INSTAGRAM</span>
+<span class="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">↗</span>
+</a>
+<a class="p-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg flex items-center justify-between group transition" href="https://github.com" rel="noopener noreferrer" target="_blank">
+<span>GITHUB</span>
+<span class="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">↗</span>
+</a>
+<a class="p-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg flex items-center justify-between group transition" href="https://linkedin.com" rel="noopener noreferrer" target="_blank">
+<span>LINKEDIN</span>
+<span class="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">↗</span>
+</a>
+<a class="p-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg flex items-center justify-between group transition" href="#hero">
+<span>BACK TO TOP</span>
+<span class="group-hover:-translate-y-1 transition-transform">↑</span>
+</a>
+</div>
+<!-- Bottom Metadata Colophon -->
+<div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-emerald-200/60 gap-4">
+<div>
+          © 2026 RAVI RAMADHANI (RAPH) // ALL RIGHTS RESERVED.
+        </div>
+<div class="flex items-center gap-4">
+<span>EST. BIAK // CURRENT: JAKARTA</span>
+<span>•</span>
+<span>90s RETRO-OFFICE AESTHETIC</span>
+</div>
+</div>
+</div>
+</footer>
+<!-- END: ContactAndFooterSection -->
+<!-- BEGIN: InteractiveScripts -->
+<!-- Copy to Clipboard Logic -->
+<script data-purpose="clipboard-interaction">
+    const copyBtn = document.getElementById('copyEmailBtn');
+    const copyText = document.getElementById('copyBtnText');
+    const emailToCopy = 'raviramadhani211@gmail.com';
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(emailToCopy).then(() => {
+          copyText.textContent = '✓ COPIED TO CLIPBOARD!';
+          copyBtn.classList.add('bg-emerald-400', 'text-ink', 'border-transparent');
+          copyBtn.classList.remove('bg-white/10', 'text-white');
+
+          setTimeout(() => {
+            copyText.textContent = 'COPY EMAIL ADDRESS';
+            copyBtn.classList.remove('bg-emerald-400', 'text-ink', 'border-transparent');
+            copyBtn.classList.add('bg-white/10', 'text-white');
+          }, 2400);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+    }
+  </script>
+<!-- Lanyard Physics & Mouse Sway Response -->
+<script data-purpose="lanyard-mouse-physics">
+    const lanyard = document.getElementById('lanyardWrapper');
+
+    if (lanyard) {
+      let isDragging = false;
+      let startX = 0;
+      let currentAngle = 0;
+
+      // Mouse drag response
+      lanyard.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+        lanyard.style.animationPlayState = 'paused';
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const deltaX = e.clientX - startX;
+        // Limit angle between -18 and 18 degrees
+        currentAngle = Math.max(Math.min(deltaX * 0.12, 18), -18);
+        lanyard.style.transform = `rotate(${currentAngle}deg)`;
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        // Smooth return spring
+        lanyard.style.transition = 'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        lanyard.style.transform = 'rotate(0deg)';
+        
+        setTimeout(() => {
+          lanyard.style.transition = 'transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1)';
+          lanyard.style.animationPlayState = 'running';
+        }, 800);
+      });
+
+      // Subtle parallax on natural mouse movement over hero
+      const heroSec = document.getElementById('hero');
+      if (heroSec) {
+        heroSec.addEventListener('mousemove', (e) => {
+          if (isDragging) return;
+          const rect = heroSec.getBoundingClientRect();
+          const normalX = (e.clientX - rect.left) / rect.width - 0.5;
+          const tilt = normalX * 5; // max 2.5 deg tilt
+          lanyard.style.transform = `rotate(${tilt}deg)`;
+        });
+
+        heroSec.addEventListener('mouseleave', () => {
+          if (!isDragging) {
+            lanyard.style.transform = 'rotate(0deg)';
+          }
+        });
+      }
+    }
+  </script>
+<!-- END: InteractiveScripts -->
+</body></html>

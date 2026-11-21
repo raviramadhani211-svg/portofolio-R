@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme {
+  --color-studio-top: #5E8B7B;
+  --color-studio-mid: #3C6A5B;
+  --color-studio-deep: #24473C;
+  --color-studio-darker: #162F27;
+  --color-paper-white: #F7F7F5;
+  --color-paper-tint: #F5F5F2;
+  --color-paper-aged: #ECECE7;
+  --color-surface-card: #FFFFFF;
+  --color-ink: #111315;
+  --color-mint-highlight: #D6EBE3;
+  --color-mint-light: #D6EBE3;
+  --color-lanyard-strap: #EFEFEF;
+
+  --font-display: "Archivo Black", sans-serif;
+  --font-body: "Plus Jakarta Sans", sans-serif;
+  --font-script: "Caveat", cursive;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-archivo: "Archivo", sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #F5F5F2;
+    color: #111315;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+/* Studio Cyclorama Background */
+.bg-cyclorama {
+  background: radial-gradient(ellipse 90% 75% at 50% 42%, #5E8B7B 0%, #3C6A5B 52%, #224338 100%);
+}
+
+/* Film grain overlay */
+.film-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.055'/%3E%3C/svg%3E");
+}
+
+/* Woven Lanyard Texture */
+.lanyard-texture {
+  background-color: #f1f1ee;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 2px, transparent 2px, transparent 4px),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 2px, transparent 2px, transparent 4px);
+}
+
+/* Lanyard sway motion */
+@keyframes sway {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(1.2deg);
+  }
+  75% {
+    transform: rotate(-1.2deg);
+  }
+}
+
+.lanyard-rig {
+  transform-origin: top center;
+  animation: sway 6s ease-in-out infinite;
+}
+
+.lanyard-rig:hover,
+.lanyard-rig.is-dragging {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .lanyard-rig {
+    animation: none;
+  }
+}
+
+/* Pass card frosted reflection */
+.badge-gloss {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.08) 45%, rgba(255, 255, 255, 0.2) 100%);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #1D3B32;
+}
+::-webkit-scrollbar-thumb {
+  background: #4E7C6C;
+  border-radius: 4px;
+}
